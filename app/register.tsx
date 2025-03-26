@@ -92,7 +92,7 @@ export default function RegisterScreen() {
   
         if (response.data.success) {
           Alert.alert('Succès', response.data.message || 'Inscription réussie');
-          router.replace('/');
+          router.replace("/login");
         } else {
           Alert.alert('Erreur', response.data.message || 'Une erreur est survenue');
         }

@@ -51,10 +51,16 @@ if (
         ':role' => $role
     ])) {
         http_response_code(201);
-        echo json_encode(["message" => "Utilisateur inscrit avec succès"]);
+        echo json_encode([
+            "success" => true,
+            "message" => "Utilisateur inscrit avec succès"
+        ]);
     } else {
         http_response_code(500);
-        echo json_encode(["message" => "Erreur lors de l'insertion"]);
+        echo json_encode([
+            "success" => false,
+            "message" => "Erreur lors de l'insertion"
+        ]);
     }
 } else {
     http_response_code(400);
