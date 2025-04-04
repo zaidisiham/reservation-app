@@ -13,6 +13,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -26,34 +27,39 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     const newErrors: typeof errors = {};
-
+  
     if (!email) newErrors.email = 'Email requis';
     else if (!validateEmail(email)) newErrors.email = 'Format d’email invalide';
-
+  
     if (!motDePasse) newErrors.motDePasse = 'Mot de passe requis';
-
+  
     setErrors(newErrors);
-
+  
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await axios.post("http://10.255.207.43/reservation-app/api/login.php", {
+        const response = await axios.post("http://192.168.2.23/reservation-app/api/login.php", {
           email,
-          motDePasse
+          motDePasse,
         });
-
-        if (response.data && response.data.status === 'success') {
-          Alert.alert("Bienvenue", response.data.message);
-          router.replace("/"); // ou vers "/dashboard" si tu crées une autre page
+  
+        if (response.data?.status === 'success') {
+          const user = response.data.user;
+  
+          // 🔐 Stocker les infos utilisateur localement
+          await AsyncStorage.setItem('user', JSON.stringify(user));
+  
+          Alert.alert("Bienvenue", `${user.prenom} ${user.nom}`);
+          router.replace("/home"); // rediriger vers les tabs
         } else {
-          Alert.alert("Erreur", response.data.message || "Email ou mot de passe incorrect");
+          Alert.alert("Erreur", response.data.message || "Identifiants incorrects");
         }
       } catch (error) {
-        Alert.alert("Erreur", "Impossible de se connecter au serveur");
         console.error(error);
+        Alert.alert("Erreur", "Connexion au serveur impossible");
       }
     }
   };
-
+  
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="dark" />
