@@ -37,7 +37,7 @@ export default function LoginScreen() {
   
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await axios.post("http://192.168.2.23/reservation-app/api/login.php", {
+        const response = await axios.post("http://192.168.1.74/reservation-app/api/login.php", {
           email,
           motDePasse,
         });
@@ -48,7 +48,7 @@ export default function LoginScreen() {
           // 🔐 Stocker les infos utilisateur localement
           await AsyncStorage.setItem('user', JSON.stringify(user));
   
-          Alert.alert("Bienvenue", `${user.prenom} ${user.nom}`);
+          
           router.replace("/home"); // rediriger vers les tabs
         } else {
           Alert.alert("Erreur", response.data.message || "Identifiants incorrects");
