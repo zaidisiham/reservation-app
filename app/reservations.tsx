@@ -17,19 +17,30 @@ export default function MesReservations() {
   const utilisateurId = 1; // À ajuster dynamiquement si tu gères des comptes utilisateurs
 
   useEffect(() => {
-    fetch(`http://10.255.205.189/reservation-app/api/get_mes_reservations.php?utilisateur_id=${utilisateurId}`)
-      .then(res => res.json())
-      .then(data => setReservations(data))
+    Promise.all([
+      fetch(`http://10.255.205.189/reservation-app/api/get_mes_reservations.php?utilisateur_id=${utilisateurId}`).then(res => res.json()),
+      fetch(`http://10.255.205.189/reservation-app/api/get_mes_reservations_salles.php?utilisateur_id=${utilisateurId}`).then(res => res.json())
+    ])
+      .then(([equipements, salles]) => {
+        // Ajouter un type pour distinguer
+        const equipementsAvecType = equipements.map(r => ({ ...r, type: 'equipement' }));
+        const sallesAvecType = salles.map(r => ({ ...r, type: 'salle' }));
+        setReservations([...equipementsAvecType, ...sallesAvecType]);
+      })
       .catch(() => Alert.alert('Erreur', 'Impossible de récupérer les réservations'));
   }, []);
 
-  const supprimerReservation = (id) => {
+  const supprimerReservation = (id, type) => {
+    const url = type === 'salle'
+      ? `http://10.255.205.189/reservation-app/api/delete_reservation_salle.php?id=${id}`
+      : `http://10.255.205.189/reservation-app/api/delete_reservation.php?id=${id}`;
+
     Alert.alert('Confirmer', 'Supprimer cette réservation ?', [
       { text: 'Annuler' },
       {
         text: 'Supprimer', onPress: async () => {
           try {
-            const res = await fetch(`http://10.255.205.189/reservation-app/api/delete_reservation.php?id=${id}`, {
+            const res = await fetch(url, {
               method: 'DELETE'
             });
             const data = await res.json();
@@ -51,7 +62,8 @@ export default function MesReservations() {
       <Text style={styles.title}>{item.nom}</Text>
       <Text style={styles.detail}>Début : {item.date_debut}</Text>
       <Text style={styles.detail}>Fin : {item.date_fin}</Text>
-      <TouchableOpacity style={styles.deleteButton} onPress={() => supprimerReservation(item.id)}>
+      <Text style={styles.detail}>Type : {item.type === 'salle' ? 'Salle' : 'Équipement'}</Text>
+      <TouchableOpacity style={styles.deleteButton} onPress={() => supprimerReservation(item.id, item.type)}>
         <Text style={styles.deleteText}>Supprimer</Text>
       </TouchableOpacity>
     </View>
@@ -63,7 +75,7 @@ export default function MesReservations() {
         <Text style={styles.header}>Mes Réservations</Text>
         <FlatList
           data={reservations}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id.toString() + item.type}
           renderItem={renderItem}
           ListEmptyComponent={<Text style={{ textAlign: 'center' }}>Aucune réservation</Text>}
         />

@@ -36,9 +36,11 @@ export default function RootLayout() {
   <Stack.Screen name="login" options={{ headerShown: false }} />
   <Stack.Screen name="home" options={{ title: "Accueil", headerShown: true }} />
   <Stack.Screen name="equipements_reservation" options={{ title: "Accueil", headerShown: true }} />
-  <Stack.Screen name="reserver/[id]" options={{ title: "Accueil", headerShown: true }} />
+  <Stack.Screen name="reserver/[id]" options={{ title: "Équipements", headerShown: true }} />
   <Stack.Screen name="reservations" options={{ title: "Accueil", headerShown: true }} />
   <Stack.Screen name="profile" options={{ title: "Profil", headerShown: true }} />
+  <Stack.Screen name="salles" options={{ title: "Salles", headerShown: true }} />
+  <Stack.Screen name="reservsalle/[id]" options={{ title: "Salles", headerShown: true }} />
   <Stack.Screen name="+not-found" />
 </Stack>
 
