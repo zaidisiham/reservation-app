@@ -38,6 +38,7 @@ export default function RootLayout() {
   <Stack.Screen name="equipements_reservation" options={{ title: "Accueil", headerShown: true }} />
   <Stack.Screen name="reserver/[id]" options={{ title: "Accueil", headerShown: true }} />
   <Stack.Screen name="reservations" options={{ title: "Accueil", headerShown: true }} />
+  <Stack.Screen name="profile" options={{ title: "Profil", headerShown: true }} />
   <Stack.Screen name="+not-found" />
 </Stack>
 
