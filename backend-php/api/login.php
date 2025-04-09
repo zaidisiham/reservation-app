@@ -1,12 +1,12 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: POST,GET,OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 // Connexion à la base de données
 $host = "localhost";
-$db_name = "reservation_db";
+$db_name = "reservation_app"; // ✅ corriger ici si tu utilises "reservation_app"
 $username = "root";
 $password = "";
 
@@ -37,6 +37,7 @@ if (!empty($data['email']) && !empty($data['motDePasse'])) {
 
         // Vérifier le mot de passe
         if (password_verify($motDePasse, $utilisateur['mot_de_passe'])) {
+            http_response_code(200);
             echo json_encode([
                 "status" => "success",
                 "message" => "Connexion réussie",

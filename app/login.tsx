@@ -36,14 +36,14 @@ export default function LoginScreen() {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await axios.post("http://10.255.206.167/reservation-app/api/login.php", {
+        const response = await axios.post("http://192.168.2.15/reservation-app/api/login.php", {
           email,
           motDePasse
         });
 
         if (response.data && response.data.status === 'success') {
           Alert.alert("Bienvenue", response.data.message);
-          router.replace("/"); // ou vers "/dashboard" si tu crées une autre page
+          router.replace("/salles"); // ou vers "/dashboard" si tu crées une autre page
         } else {
           Alert.alert("Erreur", response.data.message || "Email ou mot de passe incorrect");
         }

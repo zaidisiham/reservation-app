@@ -1,14 +1,12 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-
-// Autoriser les méthodes POST
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 // Connexion à la base de données
 $host = "localhost";
-$db_name = "reservation_db";
+$db_name = "reservation_app"; // ✅ correction ici
 $username = "root";
 $password = "";
 
@@ -31,18 +29,24 @@ if (
     isset($data['motDePasse']) &&
     isset($data['role'])
 ) {
-    // Récupérer les données
     $nom = htmlspecialchars(strip_tags($data['nom']));
     $prenom = htmlspecialchars(strip_tags($data['prenom']));
     $email = htmlspecialchars(strip_tags($data['email']));
-    $motDePasse = password_hash($data['motDePasse'], PASSWORD_DEFAULT); // mot de passe haché
+    $motDePasse = password_hash($data['motDePasse'], PASSWORD_DEFAULT);
     $role = htmlspecialchars(strip_tags($data['role']));
 
-    // Préparer la requête SQL
-    $sql = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role) VALUES (:nom, :prenom, :email, :motDePasse, :role)";
+    // ✅ Vérification du rôle
+    $roles_autorises = ['etudiant', 'professeur', 'admin'];
+    if (!in_array($role, $roles_autorises)) {
+        http_response_code(400);
+        echo json_encode(["message" => "Rôle invalide"]);
+        exit;
+    }
+
+    $sql = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role)
+            VALUES (:nom, :prenom, :email, :motDePasse, :role)";
     $stmt = $pdo->prepare($sql);
 
-    // Exécuter la requête
     if ($stmt->execute([
         ':nom' => $nom,
         ':prenom' => $prenom,
@@ -59,7 +63,8 @@ if (
         http_response_code(500);
         echo json_encode([
             "success" => false,
-            "message" => "Erreur lors de l'insertion"
+            "message" => "Erreur lors de l'insertion",
+            "erreur_sql" => $stmt->errorInfo() // ✅ pour debug
         ]);
     }
 } else {
