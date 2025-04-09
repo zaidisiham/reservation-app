@@ -17,7 +17,7 @@ export default function EquipementsScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch('http://192.168.1.74/reservation-app/api/get_equipements.php')
+    fetch('http://10.255.214.200/reservation-app/api/get_equipements.php')
       .then(res => res.json())
       .then(data => {
         setEquipements(data);

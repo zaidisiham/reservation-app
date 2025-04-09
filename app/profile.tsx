@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,9 +7,9 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 import {
   LogOut,
   User,
@@ -19,7 +19,7 @@ import {
   Edit,
   BookOpen,
   HelpCircle,
-} from 'lucide-react-native';
+} from "lucide-react-native";
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -30,12 +30,12 @@ export default function ProfileScreen() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const storedUser = await AsyncStorage.getItem('user');
+        const storedUser = await AsyncStorage.getItem("user");
         if (storedUser) {
           setUser(JSON.parse(storedUser));
         }
       } catch (error) {
-        console.error('Erreur lors du chargement de l\'utilisateur :', error);
+        console.error("Erreur lors du chargement de l'utilisateur :", error);
       } finally {
         setLoading(false);
       }
@@ -43,26 +43,29 @@ export default function ProfileScreen() {
     fetchUser();
   }, []);
 
+  // Redirection si aucun utilisateur après chargement
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login");
+    }
+  }, [loading, user]);
+
   // Déconnexion
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem('user');
-      router.replace('/login');
+      await AsyncStorage.removeItem("user");
+      router.replace("/login");
     } catch (error) {
-      Alert.alert('Erreur', 'Échec de la déconnexion.');
+      Alert.alert("Erreur", "Échec de la déconnexion.");
     }
   };
 
-  const handleEditProfile = () => router.push('/edit-profile');
-  const handleChangePassword = () => router.push('/change-password');
-  const handleViewReservations = () => router.push('/reservations-history');
+  const handleEditProfile = () => router.push("/edit-profile");
+  const handleChangePassword = () => router.push("/change-password");
+  const handleViewReservations = () => router.push("/reservations-history");
 
-  const handleSupport = () => {
-    Alert.alert(
-      'Support',
-      'Pour toute aide, contactez-nous à support@reservationapp.com'
-    );
-  };
+  const handleSupport = () => router.push("/support");
+  ;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -83,10 +86,26 @@ export default function ProfileScreen() {
       <Text style={styles.sectionTitle}>Actions disponibles</Text>
 
       <View style={styles.actionsContainer}>
-        <ActionButton icon={Edit} label="Modifier le profil" onPress={handleEditProfile} />
-        <ActionButton icon={Lock} label="Changer le mot de passe" onPress={handleChangePassword} />
-        <ActionButton icon={BookOpen} label="Mon historique réservations" onPress={handleViewReservations} />
-        <ActionButton icon={HelpCircle} label="Contacter le support" onPress={handleSupport} />
+        <ActionButton
+          icon={Edit}
+          label="Modifier le profil"
+          onPress={handleEditProfile}
+        />
+        <ActionButton
+          icon={Lock}
+          label="Changer le mot de passe"
+          onPress={handleChangePassword}
+        />
+        <ActionButton
+          icon={BookOpen}
+          label="Mon historique réservations"
+          onPress={handleViewReservations}
+        />
+        <ActionButton
+          icon={HelpCircle}
+          label="Contacter le support"
+          onPress={handleSupport}
+        />
       </View>
 
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
@@ -116,50 +135,50 @@ const ActionButton = ({ icon: Icon, label, onPress }) => (
 const styles = StyleSheet.create({
   container: {
     padding: 25,
-    backgroundColor: '#f9f9f9',
-    minHeight: '100%',
+    backgroundColor: "#f9f9f9",
+    minHeight: "100%",
   },
   header: {
     fontSize: 26,
-    fontWeight: 'bold',
-    color: '#2c3e50',
+    fontWeight: "bold",
+    color: "#2c3e50",
     marginBottom: 25,
-    textAlign: 'center',
+    textAlign: "center",
   },
   profileCard: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 15,
     padding: 20,
     marginBottom: 30,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
+    elevation: 5, // Android
+    shadowColor: "#000", // iOS
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    elevation: 5,
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
   infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 15,
   },
   infoText: {
     fontSize: 16,
     marginLeft: 10,
-    color: '#2c3e50',
+    color: "#2c3e50",
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2c3e50',
+    fontWeight: "bold",
+    color: "#2c3e50",
     marginBottom: 15,
   },
   actionsContainer: {
     marginBottom: 40,
   },
   actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ecf0f1',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#ecf0f1",
     paddingVertical: 12,
     paddingHorizontal: 15,
     borderRadius: 10,
@@ -168,25 +187,25 @@ const styles = StyleSheet.create({
   actionText: {
     fontSize: 16,
     marginLeft: 10,
-    color: '#2c3e50',
+    color: "#2c3e50",
   },
   logoutButton: {
-    flexDirection: 'row',
-    backgroundColor: '#e74c3c',
+    flexDirection: "row",
+    backgroundColor: "#e74c3c",
     paddingVertical: 14,
     borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   logoutText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
     marginLeft: 8,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   errorText: {
-    textAlign: 'center',
-    color: 'red',
+    textAlign: "center",
+    color: "red",
     fontSize: 16,
     marginBottom: 20,
   },

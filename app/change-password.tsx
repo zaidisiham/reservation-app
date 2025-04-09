@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import Icon from 'react-native-vector-icons/FontAwesome';  // Importer l'icône
+import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ChangePasswordScreen() {
   const router = useRouter();
@@ -28,23 +29,23 @@ export default function ChangePasswordScreen() {
       const storedUser = await AsyncStorage.getItem('user');
       if (storedUser) {
         const user = JSON.parse(storedUser);
-        
+
         // Appel API pour vérifier et mettre à jour le mot de passe
-        const response = await fetch('https://ton-api.com/api/change-password', {
+        const response = await fetch('http://10.255.215.65/reservation-app/api/get_change-password.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userId: user.id,
-            oldPassword: oldPassword,
-            newPassword: newPassword,
+            email: user.email, // envoi de l'email de l'utilisateur
+            ancienMotDePasse: oldPassword,
+            nouveauMotDePasse: newPassword,
           }),
         });
 
         const result = await response.json();
 
-        if (result.success) {
+        if (result.status === 'success') {
           Alert.alert('Succès', 'Le mot de passe a été mis à jour.');
           router.push('/profile');  // Redirection vers le profil après la modification
         } else {
