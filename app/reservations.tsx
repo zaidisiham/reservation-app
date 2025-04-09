@@ -17,7 +17,7 @@ export default function MesReservations() {
   const utilisateurId = 1; // À ajuster dynamiquement si tu gères des comptes utilisateurs
 
   useEffect(() => {
-    fetch(`http://10.255.204.87/reservation-app/api/get_mes_reservations.php?utilisateur_id=${utilisateurId}`)
+    fetch(`http://10.255.205.189/reservation-app/api/get_mes_reservations.php?utilisateur_id=${utilisateurId}`)
       .then(res => res.json())
       .then(data => setReservations(data))
       .catch(() => Alert.alert('Erreur', 'Impossible de récupérer les réservations'));
@@ -29,7 +29,7 @@ export default function MesReservations() {
       {
         text: 'Supprimer', onPress: async () => {
           try {
-            const res = await fetch(`http://10.255.204.87/reservation-app/api/delete_reservation.php?id=${id}`, {
+            const res = await fetch(`http://10.255.205.189/reservation-app/api/delete_reservation.php?id=${id}`, {
               method: 'DELETE'
             });
             const data = await res.json();
