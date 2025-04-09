@@ -30,7 +30,7 @@ export default function ReservationPage() {
  const [showFin, setShowFin] = useState(false);
  useEffect(() => {
    axios
-     .get(`http://10.255.205.189/reservation-app/api/salle.php?id=${id}`)
+     .get(`http://10.255.214.200/reservation-app/api/salle.php?id=${id}`)
      .then((res) => setSalle(res.data))
      .catch((err) => console.error('Erreur chargement salle :', err));
  }, [id]);
@@ -43,7 +43,7 @@ export default function ReservationPage() {
      date_fin: dateFin.toISOString().slice(0, 19).replace('T', ' ')
    };
    axios
-     .post('http://10.255.205.189/reservation-app/api/reserve.php', data)
+     .post('http://10.255.214.200/reservation-app/api/reserve.php', data)
      .then((res) => {
        if (res.data.success) {
          alert("✅ Réservation confirmée");

@@ -36,7 +36,7 @@ export default function SallePage() {
 
   useEffect(() => {
     axios
-      .get('http://10.255.205.189/reservation-app/api/salles.php')
+      .get('http://10.255.214.200/reservation-app/api/salles.php')
       .then((res) => setSalles(res.data))
       .catch((err) => console.error('Erreur chargement salles :', err));
   }, []);

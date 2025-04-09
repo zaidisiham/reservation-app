@@ -23,7 +23,7 @@ export default function ReserverPage() {
   const [disponible, setDisponible] = useState<boolean | null>(null);
 
   useEffect(() => {
-    fetch(`http://10.255.205.189/reservation-app/api/get_equipement_by_id.php?id=${id}`)
+    fetch(`http://10.255.214.200/reservation-app/api/get_equipement_by_id.php?id=${id}`)
       .then(res => res.json())
       .then(data => {
         if (data.nom) setNom(data.nom);
@@ -54,7 +54,7 @@ export default function ReserverPage() {
 
     try {
       const res = await fetch(
-        `http://10.255.205.189/reservation-app/api/check_disponibilite.php?equipement_id=${id}&date_debut=${dateDebut}&date_fin=${dateFin}`
+        `http://10.255.214.200/reservation-app/api/check_disponibilite.php?equipement_id=${id}&date_debut=${dateDebut}&date_fin=${dateFin}`
       );
       const data = await res.json();
       setDisponible(data.disponible === true || data.disponible === 'true');
@@ -68,7 +68,7 @@ export default function ReserverPage() {
     const dateFin = formatDateTime(date, heureFin);
 
     try {
-      const res = await fetch('http://10.255.205.189/reservation-app/api/reserver_equipement.php', {
+      const res = await fetch('http://10.255.214.200/reservation-app/api/reserver_equipement.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
