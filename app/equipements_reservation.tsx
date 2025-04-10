@@ -17,7 +17,9 @@ export default function EquipementsScreen() {
   const router = useRouter();
 
   useEffect(() => {
+ habib_profil
     fetch('http://192.168.1.69/reservation-app/api/get_equipements.php')
+ main
       .then(res => res.json())
       .then(data => {
         setEquipements(data);

@@ -9,7 +9,7 @@ export default function BottomTabs({ active }: { active: string }) {
 
   return (
     <View style={styles.tabBar}>
-      <TouchableOpacity onPress={() => router.push('/')} style={styles.tabButton}>
+      <TouchableOpacity onPress={() => router.push('/home')} style={styles.tabButton}>
         <Home size={24} color={active === 'accueil' ? '#2563eb' : '#6b7280'} />
         <Text style={active === 'accueil' ? styles.active : styles.inactive}>Accueil</Text>
       </TouchableOpacity>

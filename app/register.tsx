@@ -82,7 +82,9 @@ export default function RegisterScreen() {
   
     if (Object.keys(newErrors).length === 0) {
       try {
+habib_profil
         const response = await axios.post('http://192.168.1.69/reservation-app/api/register.php', {
+
           nom,
           prenom,
           email,
