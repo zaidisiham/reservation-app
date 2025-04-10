@@ -31,7 +31,7 @@ export default function ChangePasswordScreen() {
         const user = JSON.parse(storedUser);
 
         // Appel API pour vérifier et mettre à jour le mot de passe
-        const response = await fetch('http://10.255.215.65/reservation-app/api/get_change-password.php', {
+        const response = await fetch('http://192.168.1.69/reservation-app/api/get_change-password.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

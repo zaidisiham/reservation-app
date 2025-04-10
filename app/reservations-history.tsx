@@ -26,7 +26,7 @@ const HistoriqueReservations = () => {
 
   useEffect(() => {
     // Remplacer l'URL par l'URL de votre API
-    fetch(`http://10.255.214.200/reservation-app/api/get_reservations.php?utilisateur_id=${utilisateurId}`)
+    fetch(`http://192.168.1.69/reservation-app/api/get_reservations.php?utilisateur_id=${utilisateurId}`)
       .then((response) => response.json())
       .then((data) => {
         setHistorique(data);
@@ -60,7 +60,7 @@ const HistoriqueReservations = () => {
           data={historique}
           keyExtractor={(item) => item.reservation_id.toString()}
           renderItem={renderReservation}
-          ListEmptyComponent={<Text>Aucune réservation trouvée.</Text>}
+          ListEmptyComponent={<Text>Aucune historique de réservation trouvée.</Text>}
         />
       )}
       <TouchableOpacity

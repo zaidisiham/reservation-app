@@ -26,7 +26,6 @@ export default function ProfileScreen() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Chargement des données utilisateur
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -43,14 +42,12 @@ export default function ProfileScreen() {
     fetchUser();
   }, []);
 
-  // Redirection si aucun utilisateur après chargement
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/login");
     }
   }, [loading, user]);
 
-  // Déconnexion
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("user");
@@ -63,9 +60,7 @@ export default function ProfileScreen() {
   const handleEditProfile = () => router.push("/edit-profile");
   const handleChangePassword = () => router.push("/change-password");
   const handleViewReservations = () => router.push("/reservations-history");
-
   const handleSupport = () => router.push("/support");
-  ;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -75,7 +70,12 @@ export default function ProfileScreen() {
         <ActivityIndicator size="large" color="#3498db" />
       ) : user ? (
         <View style={styles.profileCard}>
-          <InfoRow icon={User} text={`${user.nom} ${user.prenom}`} />
+          <View style={styles.avatarContainer}>
+            <Text style={styles.avatarText}>
+              {user.nom?.charAt(0).toUpperCase()}
+            </Text>
+          </View>
+          <Text style={styles.userName}>{user.nom} {user.prenom}</Text>
           <InfoRow icon={Mail} text={user.email} />
           <InfoRow icon={Shield} text={user.role} />
         </View>
@@ -86,26 +86,10 @@ export default function ProfileScreen() {
       <Text style={styles.sectionTitle}>Actions disponibles</Text>
 
       <View style={styles.actionsContainer}>
-        <ActionButton
-          icon={Edit}
-          label="Modifier le profil"
-          onPress={handleEditProfile}
-        />
-        <ActionButton
-          icon={Lock}
-          label="Changer le mot de passe"
-          onPress={handleChangePassword}
-        />
-        <ActionButton
-          icon={BookOpen}
-          label="Mon historique réservations"
-          onPress={handleViewReservations}
-        />
-        <ActionButton
-          icon={HelpCircle}
-          label="Contacter le support"
-          onPress={handleSupport}
-        />
+        <ActionButton icon={Edit} label="Modifier le profil" onPress={handleEditProfile} />
+        <ActionButton icon={Lock} label="Changer le mot de passe" onPress={handleChangePassword} />
+        <ActionButton icon={BookOpen} label="Mon historique réservations" onPress={handleViewReservations} />
+        <ActionButton icon={HelpCircle} label="Contacter le support" onPress={handleSupport} />
       </View>
 
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
@@ -116,7 +100,6 @@ export default function ProfileScreen() {
   );
 }
 
-// Composant pour les lignes d'info (nom, email, etc.)
 const InfoRow = ({ icon: Icon, text }) => (
   <View style={styles.infoRow}>
     <Icon color="#3498db" size={20} />
@@ -124,7 +107,6 @@ const InfoRow = ({ icon: Icon, text }) => (
   </View>
 );
 
-// Composant pour les boutons d'action
 const ActionButton = ({ icon: Icon, label, onPress }) => (
   <TouchableOpacity style={styles.actionButton} onPress={onPress}>
     <Icon color="#2c3e50" size={20} />
@@ -150,16 +132,38 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 20,
     marginBottom: 30,
-    elevation: 5, // Android
-    shadowColor: "#000", // iOS
+    elevation: 5,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
+    alignItems: "center",
+  },
+  avatarContainer: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: "#3498db",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  avatarText: {
+    color: "#fff",
+    fontSize: 28,
+    fontWeight: "bold",
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#2c3e50",
+    marginBottom: 10,
+    textAlign: "center",
   },
   infoRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 12,
   },
   infoText: {
     fontSize: 16,
