@@ -23,7 +23,9 @@ export default function ReserverPage() {
   const [disponible, setDisponible] = useState<boolean | null>(null);
 
   useEffect(() => {
+
     fetch(`http://10.255.214.200/reservation-app/api/get_equipement_by_id.php?id=${id}`)
+
       .then(res => res.json())
       .then(data => {
         if (data.nom) setNom(data.nom);

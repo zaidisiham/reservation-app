@@ -17,6 +17,7 @@ export default function MesReservations() {
   const utilisateurId = 1; // À ajuster dynamiquement si tu gères des comptes utilisateurs
 
   useEffect(() => {
+
     Promise.all([
       fetch(`http://10.255.214.200/reservation-app/api/get_mes_reservations.php?utilisateur_id=${utilisateurId}`).then(res => res.json()),
       fetch(`http://10.255.214.200/reservation-app/api/get_mes_reservations_salles.php?utilisateur_id=${utilisateurId}`).then(res => res.json())
@@ -27,6 +28,7 @@ export default function MesReservations() {
         const sallesAvecType = salles.map(r => ({ ...r, type: 'salle' }));
         setReservations([...equipementsAvecType, ...sallesAvecType]);
       })
+
       .catch(() => Alert.alert('Erreur', 'Impossible de récupérer les réservations'));
   }, []);
 
@@ -40,7 +42,7 @@ export default function MesReservations() {
       {
         text: 'Supprimer', onPress: async () => {
           try {
-            const res = await fetch(url, {
+
               method: 'DELETE'
             });
             const data = await res.json();
