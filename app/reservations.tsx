@@ -18,8 +18,8 @@ export default function MesReservations() {
 
   useEffect(() => {
     Promise.all([
-      fetch(`http://10.255.205.189/reservation-app/api/get_mes_reservations.php?utilisateur_id=${utilisateurId}`).then(res => res.json()),
-      fetch(`http://10.255.205.189/reservation-app/api/get_mes_reservations_salles.php?utilisateur_id=${utilisateurId}`).then(res => res.json())
+      fetch(`http://192.168.2.23/reservation-app/api/get_mes_reservations.php?utilisateur_id=${utilisateurId}`).then(res => res.json()),
+      fetch(`http://192.168.2.23/reservation-app/api/get_mes_reservations_salles.php?utilisateur_id=${utilisateurId}`).then(res => res.json())
     ])
       .then(([equipements, salles]) => {
         // Ajouter un type pour distinguer
@@ -32,8 +32,8 @@ export default function MesReservations() {
 
   const supprimerReservation = (id, type) => {
     const url = type === 'salle'
-      ? `http://10.255.205.189/reservation-app/api/delete_reservation_salle.php?id=${id}`
-      : `http://10.255.205.189/reservation-app/api/delete_reservation.php?id=${id}`;
+      ? `http://192.168.2.23/reservation-app/api/delete_reservation_salle.php?id=${id}`
+      : `http://192.168.2.23/reservation-app/api/delete_reservation.php?id=${id}`;
 
     Alert.alert('Confirmer', 'Supprimer cette réservation ?', [
       { text: 'Annuler' },
